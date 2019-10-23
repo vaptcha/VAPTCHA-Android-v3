@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WebView webview;
     public static final String PASS = "pass";//通过
     public static final String CANCEL = "cancel";//取消
+    public static final String ERROR = "error";//错误
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-
         //设置webview
         setVaptcha();
     }
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setVaptcha() {
         webview.setBackgroundColor(Color.TRANSPARENT);
         webview.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-
         webview.getSettings().setUseWideViewPort(true);
         webview.getSettings().setLoadWithOverviewMode(true);
         // 禁止缓存加载，以确保可获取最新的验证图片。
@@ -52,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webview.getSettings().setJavaScriptEnabled(true);
         // 建立JavaScript调用Java接口的桥梁。
         webview.addJavascriptInterface(new vaptchaInterface(), "vaptchaInterface");
-
-
     }
 
     public class vaptchaInterface {
@@ -62,35 +59,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //json格式{signal:"",data:""}
             //signal: pass (通过) ； cancel（取消）
             try {
-                JSONObject jsonObject = new JSONObject(json);
+                final JSONObject jsonObject = new JSONObject(json);
                 String signal = jsonObject.getString("signal");
+                final String data = jsonObject.getString("data");
                 if (PASS.equals(signal)) {//通过
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "验证通过", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "验证通过:"+data, Toast.LENGTH_SHORT).show();
                             webview.setVisibility(View.GONE);
                         }
                     });
-
-
                 } else if (CANCEL.equals(signal)) {//取消
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "验证取消", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "验证取消:"+data, Toast.LENGTH_SHORT).show();
                             webview.setVisibility(View.GONE);
                         }
                     });
                 } else {//其他html页面返回的状态参数
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "错误："+data, Toast.LENGTH_SHORT).show();
+                            webview.setVisibility(View.GONE);
+                        }
+                    });
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     private void initView() {
         btn = (TextView) findViewById(R.id.btn);
@@ -110,6 +111,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-
 }
