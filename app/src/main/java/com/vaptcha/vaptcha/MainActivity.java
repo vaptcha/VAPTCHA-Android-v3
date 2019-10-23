@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "验证通过:"+data, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "验证通过:" + data, Toast.LENGTH_SHORT).show();
+                            webview.loadUrl("");
                             webview.setVisibility(View.GONE);
                         }
                     });
@@ -74,18 +75,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "验证取消:"+data, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "验证取消:" + data, Toast.LENGTH_SHORT).show();
+                            webview.loadUrl("");
                             webview.setVisibility(View.GONE);
                         }
                     });
-                } else {//其他html页面返回的状态参数
+                } else if (ERROR.equals(signal)) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "错误："+data, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "错误：" + data, Toast.LENGTH_SHORT).show();
+                            webview.loadUrl("");
                             webview.setVisibility(View.GONE);
+
                         }
                     });
+                } else {//其他html页面返回的状态参数
+
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -104,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn:
                 // 加载业务页面。
-                webview.setVisibility(View.VISIBLE);
                 webview.loadUrl("https://v.vaptcha.com/app/android.html?vid=5b4d9c33a485e50410192331&lang=zh-CN&offline_server=https://www.vaptchadowntime.com/dometime");
+                webview.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
