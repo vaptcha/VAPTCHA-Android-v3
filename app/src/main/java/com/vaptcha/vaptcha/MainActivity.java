@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn:
                 // 加载业务页面。
-                webview.loadUrl("https://v.vaptcha.com/app/android.html?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&offline_server=https://www.vaptchadowntime.com/dometime");
+                webview.loadUrl("https://v-cn.vaptcha.com/app/android.html?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&area=cn");
                 webview.setVisibility(View.VISIBLE);
                 break;
             default:
