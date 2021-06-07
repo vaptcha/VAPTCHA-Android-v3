@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webview.getSettings().setLoadWithOverviewMode(true);
         // 禁止缓存加载，以确保可获取最新的验证图片。
         webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        // 开启支持localstorage
+        webview.getSettings().setDomStorageEnabled(true);
+        webview.getSettings().setAllowFileAccess(true);
         // 设置不使用默认浏览器，而直接使用WebView组件加载页面。
         webview.setWebViewClient(new WebViewClient() {
             @Override
