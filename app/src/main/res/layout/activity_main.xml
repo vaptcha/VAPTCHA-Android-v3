@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#B89292"
         android:gravity="center"
         tools:context=".MainActivity">
 
@@ -15,18 +16,28 @@
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/topcolor_22dp"
             android:gravity="center"
             android:text="立即登录"
             android:textColor="#ffffff"
-            android:textSize="18dp" />
+            android:textSize="16sp" />
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="#FFFFFF"
+            android:visibility="invisible" />
 
     </RelativeLayout>
-    <WebView
-        android:id="@+id/webview"
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 </FrameLayout>

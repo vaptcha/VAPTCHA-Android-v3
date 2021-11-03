@@ -1,8 +1,11 @@
 package com.vaptcha.vaptcha;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String PASS = "pass";//通过
     public static final String CANCEL = "cancel";//取消
     public static final String ERROR = "error";//错误
+    public String domain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +41,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webview.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setUseWideViewPort(true);
         webview.getSettings().setLoadWithOverviewMode(true);
-        // 禁止缓存加载，以确保可获取最新的验证图片。
-        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         // 开启支持localstorage
         webview.getSettings().setDomStorageEnabled(true);
         webview.getSettings().setAllowFileAccess(true);
+        // 禁止缓存加载，以确保可获取最新的验证图片。
+        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        // 持久化存储cookie
+        CookieManager instance = CookieManager.getInstance();
+        // 允许使用cookie
+        instance.setAcceptCookie(true);
+        instance.setAcceptThirdPartyCookies(webview,true);
         // 设置不使用默认浏览器，而直接使用WebView组件加载页面。
         webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (Build.VERSION.SDK_INT < 21) {
+                    CookieSyncManager.getInstance().sync();
+                } else {
+                    CookieManager.getInstance().flush();
+                }
+
+                super.onPageFinished(view, url);
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
+
+
         });
         // 设置WebView组件支持加载JavaScript。
         webview.getSettings().setJavaScriptEnabled(true);
         // 建立JavaScript调用Java接口的桥梁。
         webview.addJavascriptInterface(new vaptchaInterface(), "vaptchaInterface");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.getInstance().sync();
+        } else {
+            CookieManager.getInstance().flush();
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.getInstance().sync();
+        } else {
+            CookieManager.getInstance().flush();
+        }
     }
 
     public class vaptchaInterface {
@@ -114,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn:
                 // 加载业务页面。
-                webview.loadUrl("https://v-cn.vaptcha.com/app/android.html?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&area=cn");
+                domain = "你的域名"; // 在这里配置你的android.html所在域名,eg: https://xxx.com/yyy
+                webview.loadUrl(domain + "/android.html?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&area=cn");
                 webview.setVisibility(View.VISIBLE);
                 break;
             default:
