@@ -41,11 +41,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webview.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setUseWideViewPort(true);
         webview.getSettings().setLoadWithOverviewMode(true);
-        // 开启支持localstorage
         webview.getSettings().setDomStorageEnabled(true);
+        webview.getSettings().setDatabaseEnabled(true);
+        webview.getSettings().setAppCacheEnabled(true);
         webview.getSettings().setAllowFileAccess(true);
-        // 禁止缓存加载，以确保可获取最新的验证图片。
-        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webview.getSettings().setSupportMultipleWindows(true);
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webview.getSettings().setLoadsImagesAutomatically(true);
+        webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+
         // 持久化存储cookie
         CookieManager instance = CookieManager.getInstance();
         // 允许使用cookie
@@ -69,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 view.loadUrl(url);
                 return true;
             }
-
-
         });
         // 设置WebView组件支持加载JavaScript。
         webview.getSettings().setJavaScriptEnabled(true);
