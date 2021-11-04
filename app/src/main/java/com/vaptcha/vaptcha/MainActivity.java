@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn:
                 // 加载业务页面。
-                src = "你的地址"; // 在这里配置你的android.html所在地址,eg: https://xxx.com/yyy/android.html
+                src = "你的地址"; // 在这里配置你的android.html资源地址,eg: https://xxx.com/yyy/android.html
                 webview.loadUrl(src + "?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&area=cn");
                 webview.setVisibility(View.VISIBLE);
                 break;
