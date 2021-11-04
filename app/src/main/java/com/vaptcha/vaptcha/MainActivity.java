@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String PASS = "pass";//通过
     public static final String CANCEL = "cancel";//取消
     public static final String ERROR = "error";//错误
-    public String domain;
+    public String src;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn:
                 // 加载业务页面。
-                domain = "你的域名"; // 在这里配置你的android.html所在域名,eg: https://xxx.com/yyy
-                webview.loadUrl(domain + "/android.html?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&area=cn");
+                src = "你的地址"; // 在这里配置你的android.html所在地址,eg: https://xxx.com/yyy/android.html
+                webview.loadUrl(src + "?vid=5b4d9c33a485e50410192331&scene=0&lang=zh-CN&area=cn");
                 webview.setVisibility(View.VISIBLE);
                 break;
             default:
