@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setAppCacheEnabled(true);
         webview.getSettings().setAllowFileAccess(true);
-        webview.getSettings().setSupportMultipleWindows(true);
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webview.getSettings().setLoadsImagesAutomatically(true);
         webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                if (Build.VERSION.SDK_INT < 21) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     CookieSyncManager.getInstance().sync();
                 } else {
                     CookieManager.getInstance().flush();
