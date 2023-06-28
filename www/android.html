@@ -33,18 +33,11 @@
             var vobj;
             window.onload = function () {
                 if (qs != []) {
-                    var vid = qs['vid'];
-                    var lang = qs['lang'];
-                    var scene = qs['scene'] || 0;
-                    var area = qs['area'] || 'cn';
+                    qs['scene'] = qs['scene'] ? qs['scene'] : 0;
+                    qs['area'] = qs['area'] ? qs['area'] : 'cn';
+                    qs['type'] = 'invisible';
 
-                    vaptcha({
-                        vid: vid,
-                        type: 'invisible',
-                        lang: lang,
-                        scene: scene,
-                        area: area,
-                    }).then(function (obj) {
+                    vaptcha(qs).then(function (obj) {
                         obj.listen('pass', function () {
                             var data = {
                                 signal: 'pass',
